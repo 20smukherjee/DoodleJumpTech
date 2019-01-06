@@ -13,7 +13,7 @@ display.set_caption('Magnet hop!')
  
 class Magneteer:
     def __init__(self):      
-        self.whatever = image.load('RBF.jpg')
+        self.whatever = image.load('RBF.png')
         #add more states
         self.reset()
 #defines graphical states during game       
