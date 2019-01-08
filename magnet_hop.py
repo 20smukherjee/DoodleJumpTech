@@ -1,5 +1,6 @@
 import pygame
 import random
+import sys
 #import necessary modules
 
 interface_x = 1080
