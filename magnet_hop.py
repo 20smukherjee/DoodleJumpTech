@@ -75,3 +75,17 @@ class Magneteer:
                 keys = key.get_pressed()
                 if keys[K_SPACE]:
                     self.velocity_y = self.jump_speed
+     def move(self):
+     #Moves the character
+         while True:
+             for e in pygame.event.get():
+                 if e.type == pygame.QUIT:
+                     sys.exit()
+                 if e.type == pygame.KEYDOWN:
+                     if pygame.key.name(e.key) == 'up':
+                         self.velocity_y -= self.acceleration_y
+                     if pygame.key.name(e.key) == 'left':
+                             self.velocity_x -= self.acceleration_x
+                     if pygame.key.name(e.key) == 'right':
+                              self.velocity_x += self.acceleration_x
+         
