@@ -96,23 +96,23 @@ class Platform_Manager:
       def __init__(self):
           self.platforms = []
           self.spawns = 0
-          self.start_spawn = window_y
+          self.start_spawn = interface_y
  
           scale = 3
           self.width, self.height = 24 * scale, 6 * scale
           def update(self):
-        self.spawner()
+        self.generator()
         return self.manage()
  
        
        
-      def spawner(self):
-          if window_y - info['screen_y'] > self.spawns * platform_spacing:
-              self.spawn()
+      def generator(self):
+          if interface_y - info['interface_y'] > self.spawns * platform_spacing:
+              self.generate()
 
-      def spawn(self):
+      def generate(self):
           y = self.start_spawn - self.spawns * platform_spacing
-          x = random.randint(-self.width, window_x)
+          x = random.randint(-self.width, interface_x)
 
           self.platforms.append(Platform(x,y,random.choice([1,-1])))
           self.spawns += 1
