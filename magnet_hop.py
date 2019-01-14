@@ -12,7 +12,7 @@ interface = display.set_mode((interface_x, interface_y))
 score = time.score()
 display.set_caption('Magnet hop!')
  
-class Magneteer:
+class MagnetJump:
     def __init__(self):      
         self.whatever = image.load('RBF.png')
         #add more states
@@ -89,4 +89,48 @@ class Magneteer:
                              self.velocity_x -= self.acceleration_x
                      if pygame.key.name(e.key) == 'right':
                               self.velocity_x += self.acceleration_x
+       
+platform_spacing = 100
+ 
+class Platform_Manager:
+      def __init__(self):
+          self.platforms = []
+          self.spawns = 0
+          self.start_spawn = window_y
+ 
+          scale = 3
+          self.width, self.height = 24 * scale, 6 * scale
+          def update(self):
+        self.spawner()
+        return self.manage()
+ 
+       
+       
+      def spawner(self):
+          if window_y - info['screen_y'] > self.spawns * platform_spacing:
+              self.spawn()
+
+      def spawn(self):
+          y = self.start_spawn - self.spawns * platform_spacing
+          x = random.randint(-self.width, window_x)
+
+          self.platforms.append(Platform(x,y,random.choice([1,-1])))
+          self.spawns += 1
+
+
+      def manage(self):
+          u = []
+          b = []
+          for i in self.platforms:
+              i.move()
+              i.change_direction()
+              b.append(i.show())
+
+              if i.on_screen():
+                  u.append(i)
+
+          self.platforms = u
+          return b
+
+ 
          
