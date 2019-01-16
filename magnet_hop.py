@@ -1,4 +1,4 @@
-import pygame
+from pygame import *
 import random
 import sys
 #import necessary modules
@@ -9,7 +9,7 @@ interface_y = 1920
 
 init()
 interface = display.set_mode((interface_x, interface_y))
-score = time.score()
+score = time.Clock()
 display.set_caption('Magnet hop!')
  
 class MagnetJump:
@@ -46,7 +46,7 @@ class MagnetJump:
     def physics(self, game):
     #defines gravity and how velocity and position will change
         on = False
-        defines variable for true and false
+        #defines variable for true and false
         for color, rect in game:
             x,y,w,h = rect
  
@@ -76,61 +76,124 @@ class MagnetJump:
                 keys = key.get_pressed()
                 if keys[K_SPACE]:
                     self.velocity_y = self.jump_speed
-     def move(self):
+                    
+    def move(self):
      #Moves the character
-         while True:
-             for e in pygame.event.get():
-                 if e.type == pygame.QUIT:
-                     sys.exit()
-                 if e.type == pygame.KEYDOWN:
-                     if pygame.key.name(e.key) == 'up':
-                         self.velocity_y -= self.acceleration_y
-                     if pygame.key.name(e.key) == 'left':
-                             self.velocity_x -= self.acceleration_x
-                     if pygame.key.name(e.key) == 'right':
-                              self.velocity_x += self.acceleration_x
+        while True:
+            for e in pygame.event.get():
+                if e.type == pygame.QUIT:
+                    sys.exit()
+                if e.type == pygame.KEYDOWN:
+                    if pygame.key.name(e.key) == 'up':
+                        self.velocity_y -= self.acceleration_y
+                    if pygame.key.name(e.key) == 'left':
+                        self.velocity_x -= self.acceleration_x
+                    if pygame.key.name(e.key) == 'right':
+                        self.velocity_x += self.acceleration_x
        
 platform_spacing = 100
  
 class Platform_Manager:
-      def __init__(self):
-          self.platforms = []
-          self.spawns = 0
-          self.start_spawn = interface_y
+    def __init__(self):
+        self.platforms = []
+        self.spawns = 0
+        self.start_spawn = interface_y
  
-          scale = 3
-          self.width, self.height = 24 * scale, 6 * scale
-          def update(self):
-        self.generator()
-        return self.manage()
- 
-       
-       
-      def generator(self):
-          if interface_y - info['interface_y'] > self.spawns * platform_spacing:
-              self.generate()
+        scale = 3
+        self.width, self.height = 24 * scale, 6 * scale
+        def update(self):
+            self.generator()
+            return self.manage()
+    def generator(self):
+        if interface_y - info['interface_y'] > self.spawns * platform_spacing:
+            self.generate()
 
-      def generate(self):
-          y = self.start_spawn - self.spawns * platform_spacing
-          x = random.randint(-self.width, interface_x)
+    def generate(self):
+        y = self.start_spawn - self.spawns * platform_spacing
+        x = random.randint(-self.width, interface_x)
 
-          self.platforms.append(Platform(x,y,random.choice([1,-1])))
-          self.spawns += 1
+        self.platforms.append(Platform(x,y,random.choice([1,-1])))
+        self.spawns += 1
 
 
-      def manage(self):
-          u = []
-          b = []
-          for i in self.platforms:
-              i.move()
-              i.change_direction()
-              b.append(i.show())
+    def manage(self):
+        a = []
+        b = []
+        for i in self.platforms:
+            i.move()
+            i.change_direction()
+            b.append(i.show())
 
-              if i.on_screen():
-                  u.append(i)
+            if i.on_screen():
+                a.append(i)
 
-          self.platforms = u
-          return b
+        self.platforms = a
+        return b
 
- 
-         
+
+class Platform:
+    def __init__(self,x,y,direction):
+        self.x = x
+        self.y = y
+        self.direction = direction
+        self.speed = 2
+        self.colour = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
+        scale = 3
+        self.width, self.height = 24 * scale, 6 * scale
+
+    def move(self):
+        self.x += self.speed * self.direction
+        self.change_direction()
+
+    def change_direction(self):
+        if self.x <= 0:
+            self.direction = 1
+        if self.x + self.width >= window_x:
+            self.direction = -1
+
+    def on_screen(self):
+        if self.y > info['screen_y'] + window_y:
+            return False
+        return True
+
+    def show(self):
+        return ((0,0,0), (self.x, self.y, self.width, self.height))
+
+def random_colour(l,h):
+    return (random.randint(l,h),random.randint(l,h),random.randint(l,h))
+
+def blit_images(x):
+    for i in x:
+        window.blit(transform.scale(i[0], (i[1][2],i[1][3])), (i[1][0], i[1][1] - info['screen_y']))
+
+def event_loop():
+    for loop in event.get():
+        if loop.type == KEYDOWN:
+            if loop.key == K_ESCAPE:
+                quit()
+        if loop.type == QUIT:
+            quit()
+
+f = font.SysFont('', 50)
+def show_score(score, pos):
+    message = f.render(str(round(score)), True, (100,100,100))
+    rect = message.get_rect()
+
+    if pos == 0:
+        x = window_x - rect.width - 10
+    else:
+        x = 10
+    y = rect.height + 10
+        
+    window.blit(message, (x, y))   
+        
+
+info = {
+    'screen_y': 0,
+    'score': 0,
+    'high_score': 0
+    }
+
+
+MagnetJump = MagnetJump()
+platform_manager = Platform_Manager()
