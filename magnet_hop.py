@@ -137,7 +137,7 @@ class Platform:
         self.y = y
         self.direction = direction
         self.speed = 2
-        self.colour = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
+        self.color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
         scale = 3
         self.width, self.height = 24 * scale, 6 * scale
 
@@ -159,7 +159,7 @@ class Platform:
     def show(self):
         return ((0,0,0), (self.x, self.y, self.width, self.height))
 
-def random_colour(l,h):
+def random_color(l,h):
     return (random.randint(l,h),random.randint(l,h),random.randint(l,h))
 
 def blit_images(x):
