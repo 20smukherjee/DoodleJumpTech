@@ -25,7 +25,7 @@ class Magnet_Man:
         self.jump_velocity = 15
 
         scale = 7
-        self.width, self.height = 7 * scale, 12 * scale
+        self.width, self.height = 6 * scale, 12 * scale
         self.scale = scale
 
         self.x = (interface_x - self.width) / 2
@@ -202,7 +202,6 @@ Magnet_man = Magnet_Man()
 platform_manager = Platform_Manager()
 
 while True:
-    #MATH THINGS
 
     event_loop()
 
