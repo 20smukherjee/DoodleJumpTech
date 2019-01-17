@@ -20,12 +20,12 @@ class Magnet_Man:
         self.velocity_x = 0
         self.velocity_y = 0
         self.max_velocity_x = 5
-        self.max_velocity_y = 15
+        self.max_velocity_y = 13
         self.x_acceleration = 0.5
-        self.jump_velocity = 15
+        self.jump_velocity = 13
 
         scale = 7
-        self.width, self.height = 6 * scale, 12 * scale
+        self.width, self.height = 7 * scale, 12 * scale
         self.scale = scale
 
         self.x = (interface_x - self.width) / 2
@@ -127,7 +127,7 @@ class Platform_Manager:
         y = self.start_spawn - self.spawns * platform_spacing
         x = random.randint(-self.width, interface_x)
         
-        self.platforms.append(Platform(x,y,random.choice([1,-1])))
+        self.platforms.append(Platform(x,y))
         self.spawns += 1
 
         
@@ -146,10 +146,9 @@ class Platform_Manager:
 
 
 class Platform:
-    def __init__(self,x,y,direction):
+    def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.direction = direction
         self.color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
         scale = 3
         self.width, self.height = 24 * scale, 6 * scale
@@ -160,7 +159,7 @@ class Platform:
         return True
 
     def show(self):
-        return ((0,0,0), (self.x, self.y, self.width, self.height))
+        return ((0,0,0), image.load("Black_hole.png")*scale)
 
 def random_colour(l,h):
     return (random.randint(l,h),random.randint(l,h),random.randint(l,h))
@@ -202,6 +201,7 @@ Magnet_man = Magnet_Man()
 platform_manager = Platform_Manager()
 
 while True:
+    #MATH THINGS
 
     event_loop()
 
